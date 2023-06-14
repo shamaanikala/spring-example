@@ -23,4 +23,8 @@ jobs:
           push: true
           tags: shamaanikala/spring-example
 
-        # TODO add render.com deploy stuff
+      - name: Deploy render.com
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.RENDER_COM_DEPLOY_HOOK }}
+          method: 'GET'
