@@ -9,17 +9,14 @@ COPY . .
 # build with Maven
 RUN ./mvnw package
 
-# java is backwards compatible so select a fresh and secure jdk to host it
-# Use sfj image ibmjava:8-sfj
-# uses ubuntu => useradd -m appuser
-# ibmjava:8-sfj linux/amd64 96.55 MB
-FROM ibmjava@sha256:6fda6debb5efe13a25a0b7db9fb1c48e6a1d152910f612b49309c8d55af796da
-
+# eclipse-temurin:8-jre-alpine 50 MB image
+FROM eclipse-temurin@sha256:3caa0a38391d96932bdb53abb5420f20786cea5adf5dfc978a1ffcd7a2e74885
 EXPOSE 8080
 
 COPY --from=build-stage /usr/src/app/target/docker-example-1.1.3.jar docker-example-1.1.3.jar
 
-RUN useradd -m appuser # imbjava sfj uses ubuntu
+#RUN useradd -m appuser # eclipse-temurin uses alpine
+RUN adduser -D appuser
 USER appuser
 
 # run the application
